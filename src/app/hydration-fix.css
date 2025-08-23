@@ -1,0 +1,40 @@
+/*
+  Hydration fix styles for cdk_front_company
+  These styles help prevent browser extensions and other external sources
+  from causing hydration mismatches
+*/
+
+/* Prevent extensions from modifying the DOM in ways that cause hydration issues */
+html {
+  /* Reset any potential custom properties that might be injected */
+  --vsc-domain: initial !important;
+  /* Ensure consistent font rendering */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Prevent browser extensions from injecting styles that cause layout shifts */
+body {
+  /* Ensure consistent box model */
+  box-sizing: border-box;
+  /* Override any extension-injected styles */
+  background: initial !important;
+  color: initial !important;
+}
+
+/* Ensure consistent styling for UI components */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Prevent extensions from interfering with component styling */
+[data-radix-dialog-overlay],
+[data-radix-dialog-content],
+[data-sonner-toast],
+[data-sonner-toaster] {
+  /* Isolate from extension interference */
+  isolation: isolate;
+}

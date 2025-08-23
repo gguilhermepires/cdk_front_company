@@ -33,6 +33,24 @@ export class CompanyService {
     }
   }
 
+  static async getUserCompanies(token?: string): Promise<Company[]> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/company/v1/companies/user`, {
+        headers: this.getHeaders(token),
+      })
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch user companies: ${response.statusText}`)
+      }
+      
+      const data = await response.json()
+      return Array.isArray(data) ? data : data.companies || []
+    } catch (error) {
+      console.error('Error fetching user companies:', error)
+      throw error
+    }
+  }
+
   static async getCompanyById(id: string, token?: string): Promise<Company> {
     try {
       const response = await fetch(`${API_BASE_URL}/company/v1/companies/${id}`, {

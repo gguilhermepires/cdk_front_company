@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { mockAPI } from '@/lib/mockData'
+import { CompanyService } from '@/services/companyService'
 
 export interface Company {
   id: string
@@ -36,6 +37,18 @@ export const fetchCompanies = createAsyncThunk(
       }
       const data = await response.json()
       return Array.isArray(data) ? data : data.companies || []
+    } catch (error) {
+      console.warn('API call failed, using mock data:', error)
+      return await mockAPI.getCompanies()
+    }
+  }
+)
+
+export const fetchUserCompanies = createAsyncThunk(
+  'company/fetchUserCompanies',
+  async (token?: string) => {
+    try {
+      return await CompanyService.getUserCompanies(token)
     } catch (error) {
       console.warn('API call failed, using mock data:', error)
       return await mockAPI.getCompanies()
@@ -136,6 +149,18 @@ const companySlice = createSlice({
       .addCase(fetchCompanies.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message || 'Failed to fetch companies'
+      })
+      .addCase(fetchUserCompanies.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(fetchUserCompanies.fulfilled, (state, action) => {
+        state.loading = false
+        state.companies = action.payload
+      })
+      .addCase(fetchUserCompanies.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message || 'Failed to fetch user companies'
       })
       .addCase(createCompany.pending, (state) => {
         state.loading = true

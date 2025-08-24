@@ -23,22 +23,65 @@ import {
 } from '@/components/ui/dialog'
 import { CompanyForm } from '@/components/CompanyForm'
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
-import { fetchCompanies, deleteCompany, setSelectedCompany, Company } from '@/lib/redux/slices/companySlice'
+import { setSelectedCompany } from '@/lib/redux/slices/companySlice'
+import { Company } from '@/lib/redux/slices/authSlice'
+import { CompanyService } from '@/services/companyService'
+import { RootState } from '@/lib/redux/store'
 import { toast } from 'sonner'
 
 export default function CompanyManagement() {
   const dispatch = useAppDispatch()
-  const { companies, loading, error } = useAppSelector((state) => state.company)
+  const [companies, setCompanies] = useState<Company[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   
   const [searchTerm, setSearchTerm] = useState('')
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [showEditDialog, setShowEditDialog] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [selectedCompany, setSelectedCompanyLocal] = useState<Company | null>(null)
+  const user = useAppSelector((state: RootState) => state.auth.user);
+  const accessToken = useAppSelector((state: RootState) => state.auth.loginResponse?.tokens.accessToken);
+  
+  // Debug current auth state
+  console.log("Company app current state:", { user, accessToken, hasLoginResponse: !!useAppSelector(state => state.auth.loginResponse) });
+  console.log("UUser selected:", user);
 
   useEffect(() => {
-    dispatch(fetchCompanies())
-  }, [dispatch])
+    const loadUserCompanies = async () => {
+      try {
+        setLoading(true)
+
+        if (!user) {
+          setError('User not authenticated. Please login first.')
+          return
+        }
+
+        if (!accessToken) {
+          setError('Access token not available. Please login again.')
+          return
+        }
+
+        const fetchedCompanies = await CompanyService.getUserCompanies(accessToken)
+        setCompanies(fetchedCompanies)
+
+        if (fetchedCompanies.length === 0) {
+          setError('You do not have access to any companies. Please contact your administrator.')
+        }
+      } catch (err) {
+        console.error('Failed to load user companies:', err)
+        if (err instanceof Error && err.message.includes('401')) {
+          setError('Authentication expired. Please login again.')
+        } else {
+          setError('Failed to load your companies. Please try again later.')
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadUserCompanies()
+  }, [user, accessToken])
 
   useEffect(() => {
     if (error) {
@@ -67,7 +110,8 @@ export default function CompanyManagement() {
   const handleDeleteConfirm = async () => {
     if (selectedCompany) {
       try {
-        await dispatch(deleteCompany(selectedCompany.id)).unwrap()
+        await CompanyService.deleteCompany(selectedCompany.id, accessToken)
+        setCompanies(companies.filter((c) => c.id !== selectedCompany.id))
         toast.success('Company deleted successfully')
         setShowDeleteDialog(false)
         setSelectedCompanyLocal(null)
@@ -137,7 +181,7 @@ export default function CompanyManagement() {
               {filteredCompanies.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center py-8">
-                    {searchTerm ? 'No companies found matching your search.' : 'No companies found. Create your first company!'}
+                    {searchTerm ? 'No companies found matching your search.' : error ? error : 'No companies found. Create your first company!'}
                   </TableCell>
                 </TableRow>
               ) : (

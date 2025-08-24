@@ -2,15 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { mockAPI } from '@/lib/mockData'
 import { CompanyService } from '@/services/companyService'
 
-export interface Company {
-  id: string
-  name: string
-  address: string
-  phone: string
-  email?: string
-  website?: string
-  status: 'ACTIVE' | 'DELETED'
-}
+import { Company } from './authSlice'
 
 interface CompanyState {
   companies: Company[]

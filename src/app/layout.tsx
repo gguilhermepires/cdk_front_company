@@ -4,6 +4,7 @@ import "./globals.css";
 import "./hydration-fix.css";
 import { Providers } from "@/lib/redux/provider";
 import { Toaster } from "sonner";
+import MessageListener from "@/components/MessageListener";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
         <Providers>
+          <MessageListener />
           {children}
           <Toaster />
         </Providers>

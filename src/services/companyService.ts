@@ -1,6 +1,6 @@
-import { Company } from '@/lib/redux/slices/companySlice'
+import { Company } from '@/lib/redux/slices/authSlice'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL 
 
 export class CompanyService {
   private static getHeaders(token?: string) {
@@ -17,7 +17,7 @@ export class CompanyService {
 
   static async getAllCompanies(token?: string): Promise<Company[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/company/v1/companies`, {
+      const response = await fetch(`${API_BASE_URL}/companies`, {
         headers: this.getHeaders(token),
       })
       
@@ -53,7 +53,7 @@ export class CompanyService {
 
   static async getCompanyById(id: string, token?: string): Promise<Company> {
     try {
-      const response = await fetch(`${API_BASE_URL}/company/v1/companies/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/companies/${id}`, {
         headers: this.getHeaders(token),
       })
       
@@ -70,7 +70,7 @@ export class CompanyService {
 
   static async createCompany(company: Omit<Company, 'id'>, token?: string): Promise<Company> {
     try {
-      const response = await fetch(`${API_BASE_URL}/company/v1/companies`, {
+      const response = await fetch(`${API_BASE_URL}/companies`, {
         method: 'POST',
         headers: this.getHeaders(token),
         body: JSON.stringify(company),
@@ -90,7 +90,7 @@ export class CompanyService {
 
   static async updateCompany(company: Company, token?: string): Promise<Company> {
     try {
-      const response = await fetch(`${API_BASE_URL}/company/v1/companies/${company.id}`, {
+      const response = await fetch(`${API_BASE_URL}/companies/${company.id}`, {
         method: 'PUT',
         headers: this.getHeaders(token),
         body: JSON.stringify(company),
@@ -110,7 +110,7 @@ export class CompanyService {
 
   static async deleteCompany(id: string, token?: string): Promise<void> {
     try {
-      const response = await fetch(`${API_BASE_URL}/company/v1/companies/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/companies/${id}`, {
         method: 'DELETE',
         headers: this.getHeaders(token),
       })
@@ -131,7 +131,7 @@ export class CompanyService {
     company: Company
   }> {
     try {
-      const response = await fetch(`${API_BASE_URL}/company/v1/companies/auth`, {
+      const response = await fetch(`${API_BASE_URL}/companies/auth`, {
         method: 'POST',
         headers: this.getHeaders(),
         body: JSON.stringify({

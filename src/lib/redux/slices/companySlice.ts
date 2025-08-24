@@ -23,7 +23,7 @@ export const fetchCompanies = createAsyncThunk(
   async () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL 
-      const response = await fetch(`${apiUrl}/company/v1/companies`)
+      const response = await fetch(`${apiUrl}/companies`)
       if (!response.ok) {
         throw new Error(`Failed to fetch companies: ${response.status} ${response.statusText}`)
       }
@@ -53,7 +53,7 @@ export const createCompany = createAsyncThunk(
   async (company: Omit<Company, 'id'>) => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL 
-      const response = await fetch(`${apiUrl}/company/v1/companies`, {
+      const response = await fetch(`${apiUrl}/companies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export const updateCompany = createAsyncThunk(
   async (company: Company) => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL 
-      const response = await fetch(`${apiUrl}/company/v1/companies/${company.id}`, {
+      const response = await fetch(`${apiUrl}/companies/${company.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ export const deleteCompany = createAsyncThunk(
   async (id: string) => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL 
-      const response = await fetch(`${apiUrl}/company/v1/companies/${id}`, {
+      const response = await fetch(`${apiUrl}/companies/${id}`, {
         method: 'DELETE',
       })
       if (!response.ok) {

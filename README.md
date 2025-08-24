@@ -79,11 +79,11 @@ npm run lint
 
 The application integrates with the Company Management API with the following endpoints:
 
-- `GET /api/company/v1/companies` - List all companies
-- `POST /api/company/v1/companies` - Create a new company
-- `GET /api/company/v1/companies/{id}` - Get a specific company
-- `PUT /api/company/v1/companies/{id}` - Update a company
-- `DELETE /api/company/v1/companies/{id}` - Delete a company
+- `GET /api/companies` - List all companies
+- `POST /api/companies` - Create a new company
+- `GET /api/companies/{id}` - Get a specific company
+- `PUT /api/companies/{id}` - Update a company
+- `DELETE /api/companies/{id}` - Delete a company
 
 ### Company Schema
 

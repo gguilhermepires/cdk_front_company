@@ -80,7 +80,7 @@ export default function CompanyManagement() {
     if (accessToken && companies.length === 0 && !error) {
       loadUserCompanies()
     }
-  }, [accessToken])
+  }, [accessToken, companies.length, error])
 
   useEffect(() => {
     if (error) {

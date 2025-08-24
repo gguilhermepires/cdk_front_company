@@ -22,7 +22,7 @@ export const fetchCompanies = createAsyncThunk(
   'company/fetchCompanies',
   async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL 
       const response = await fetch(`${apiUrl}/company/v1/companies`)
       if (!response.ok) {
         throw new Error(`Failed to fetch companies: ${response.status} ${response.statusText}`)
@@ -52,7 +52,7 @@ export const createCompany = createAsyncThunk(
   'company/createCompany',
   async (company: Omit<Company, 'id'>) => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL 
       const response = await fetch(`${apiUrl}/company/v1/companies`, {
         method: 'POST',
         headers: {
@@ -76,7 +76,7 @@ export const updateCompany = createAsyncThunk(
   'company/updateCompany',
   async (company: Company) => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL 
       const response = await fetch(`${apiUrl}/company/v1/companies/${company.id}`, {
         method: 'PUT',
         headers: {
@@ -100,7 +100,7 @@ export const deleteCompany = createAsyncThunk(
   'company/deleteCompany',
   async (id: string) => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL 
       const response = await fetch(`${apiUrl}/company/v1/companies/${id}`, {
         method: 'DELETE',
       })

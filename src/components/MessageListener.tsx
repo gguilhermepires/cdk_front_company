@@ -27,6 +27,8 @@ export default function MessageListener() {
     }
 
     console.log('MessageListener: Setting up message listener')
+    console.log('MessageListener: Parent window exists?', window.parent !== window)
+    console.log('MessageListener: Running in iframe?', window !== window.top)
     window.addEventListener('message', handleMessage)
 
     return () => {

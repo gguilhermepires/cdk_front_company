@@ -35,7 +35,7 @@ export class CompanyService {
 
   static async getUserCompanies(token?: string): Promise<Company[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/company/v1/companies/user`, {
+      const response = await fetch(`${API_BASE_URL}/companies/user`, {
         headers: this.getHeaders(token),
       })
       

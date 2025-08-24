@@ -51,6 +51,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setAuth: (state, action: PayloadAction<{ user: User; accessToken: string; selectedCompany?: Company }>) => {
+      console.log('Redux setAuth called with:', action.payload)
       state.user = action.payload.user
       state.loginResponse = {
         tokens: {
@@ -63,6 +64,7 @@ const authSlice = createSlice({
         state.selectedCompany = action.payload.selectedCompany
       }
       state.error = null
+      console.log('Redux state after setAuth:', { user: state.user, hasAccessToken: !!state.loginResponse?.tokens.accessToken })
     },
     clearAuth: (state) => {
       state.user = null

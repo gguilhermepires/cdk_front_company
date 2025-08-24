@@ -51,11 +51,7 @@ export default function CompanyManagement() {
     const loadUserCompanies = async () => {
       try {
         setLoading(true)
-
-        if (!user) {
-          setError('User not authenticated. Please login first.')
-          return
-        }
+        setError('')
 
         if (!accessToken) {
           setError('Access token not available. Please login again.')
@@ -80,8 +76,11 @@ export default function CompanyManagement() {
       }
     }
 
-    loadUserCompanies()
-  }, [user, accessToken])
+    // Only load companies if we have an access token and haven't loaded yet
+    if (accessToken && companies.length === 0 && !error) {
+      loadUserCompanies()
+    }
+  }, [accessToken])
 
   useEffect(() => {
     if (error) {
